@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">BasicFramework</string>
+    <string name="menu">菜单</string>
+    <string name="notice">通知</string>
+</resources>

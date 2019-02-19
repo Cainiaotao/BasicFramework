@@ -3,6 +3,7 @@ package com.example.basicframework.ui.fragment.calender
 import android.view.View
 import com.example.basicframework.R
 import com.example.basicframework.base.LazyLoadFragment
+import com.example.basicframework.utils.CustomPainter
 import com.example.basicframework.utils.DateUtils
 import com.necer.entity.NDate
 import com.necer.listener.OnCalendarChangedListener
@@ -19,6 +20,7 @@ class CalenderFragment :LazyLoadFragment() {
 
     private fun initCalenderView(){
         nCalendar.setDateInterval("1901-01-01", "2099-12-30")//设置区间
+        //nCalendar.calendarPainter = CustomPainter(activity!!)//自定义日历
         nCalendar.setOnCalendarChangedListener(object :OnCalendarChangedListener{
             override fun onCalendarStateChanged(isMonthSate: Boolean) {
                 //周月切换

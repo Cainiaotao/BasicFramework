@@ -47,40 +47,41 @@ class CalendarActivity :BaseActivity() {
         for (item in titles.indices) {
             val tab:TabLayout.Tab? = tabLayout.getTabAt(item)
             val view = LayoutInflater.from(this).inflate(R.layout.tab_custom_calender, null)
-            val mTv_Title :TextView= view.findViewById(R.id.tv_tab)
-            mTv_Title.text = titles[item]
+            val tv_tab :TextView= view.findViewById(R.id.tv_tab)
+            tv_tab.text = titles[item]
             tab?.customView =  view
 
             if (item == 0){
-                mTv_Title.setTextColor(ContextCompat.getColor(this,R.color.colorAccent))
+                tv_tab.setTextColor(ContextCompat.getColor(this,R.color.colorAccent))
             }else{
-                mTv_Title.setTextColor(ContextCompat.getColor(this,R.color.colorWhite))
+                tv_tab.setTextColor(ContextCompat.getColor(this,R.color.colorWhite))
             }
         }
     }
 
     override fun initEvent() {
         super.initEvent()
-        tabListener = object :TabLayout.OnTabSelectedListener{
-            override fun onTabReselected(p0: TabLayout.Tab?) {
-            }
+        tabLayout.addOnTabSelectedListener(onTabSelectedListener)
+    }
 
-            override fun onTabUnselected(p0: TabLayout.Tab?) {
-                val tv_tab:TextView = p0?.customView!!.findViewById(R.id.tv_tab)
-                tv_tab.setTextColor(ContextCompat.getColor(this@CalendarActivity,R.color.colorWhite))
-            }
-
-            override fun onTabSelected(p0: TabLayout.Tab?) {
-                val tv_tab:TextView = p0?.customView!!.findViewById(R.id.tv_tab)
-                tv_tab.setTextColor(ContextCompat.getColor(this@CalendarActivity,R.color.colorAccent))
-            }
-
+    private val onTabSelectedListener:TabLayout.OnTabSelectedListener = object :TabLayout.OnTabSelectedListener{
+        override fun onTabReselected(item: TabLayout.Tab?) {
         }
-        tabLayout.addOnTabSelectedListener(tabListener as TabLayout.OnTabSelectedListener)
+
+        override fun onTabUnselected(item: TabLayout.Tab?) {
+            val tv_title:TextView? = item?.customView?.findViewById(R.id.tv_tab)
+            tv_title?.setTextColor(ContextCompat.getColor(this@CalendarActivity,R.color.colorWhite))
+        }
+
+        override fun onTabSelected(item: TabLayout.Tab?) {
+            val tv_title:TextView? = item?.customView?.findViewById(R.id.tv_tab)
+            tv_title?.setTextColor(ContextCompat.getColor(this@CalendarActivity,R.color.colorAccent))
+        }
+
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        tabLayout.removeOnTabSelectedListener(tabListener as TabLayout.OnTabSelectedListener)
+        tabLayout.removeOnTabSelectedListener(onTabSelectedListener)
     }
 }

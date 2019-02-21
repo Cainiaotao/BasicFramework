@@ -31,6 +31,6 @@ abstract class BaseFragment : Fragment(){
     open fun initEvent() {}
 
     fun showToast(context: Context,str:String){
-        if (null!= context)Toast.makeText(context,str,Toast.LENGTH_SHORT).show()
+        Toast.makeText(context,str,Toast.LENGTH_SHORT).show()
     }
 }

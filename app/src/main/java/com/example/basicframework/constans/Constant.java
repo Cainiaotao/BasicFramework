@@ -7,7 +7,7 @@ package com.example.basicframework.constans;
  */
 public class Constant {
     /**频道对应的请求参数*/
-    public static final String CHANNEL_CODE = "channelCode";
+    public static final String SQUARES_CODE = "squares_code";
     public static final String IS_VIDEO_LIST = "isVideoList";
 
 }

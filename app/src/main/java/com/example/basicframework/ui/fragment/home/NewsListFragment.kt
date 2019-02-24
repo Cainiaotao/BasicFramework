@@ -59,7 +59,7 @@ class NewsListFragment:LazyLoadFragment(), SwipeRefreshLayout.OnRefreshListener 
     override fun onRefresh() {
         swipe.isRefreshing = true
         for (i in 0 until 20){
-            newsList.add(NewsBean(UserInfo("name:$i"),"jhsdhasdajsdhajsdasdh",null,false,false))
+            newsList.add(NewsBean(UserInfo("name:$i"),getString(R.string.dummy_text1),null,false,false))
         }
         newsList.add(0, NewsBean(null,"",null,false,false))
         newsList.add(2,NewsBean(UserInfo("name:pic1"),"居中大图+文本", arrayListOf(1),false,false))

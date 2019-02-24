@@ -3,13 +3,15 @@
                                              xmlns:app="http://schemas.android.com/apk/res-auto"
                                              xmlns:tools="http://schemas.android.com/tools"
                                              android:layout_width="match_parent"
-                                             android:layout_height="wrap_content">
+                                             android:layout_height="wrap_content"
+                                             xmlns:expandableTextView="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
             android:id="@+id/ll_text"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintEnd_toEndOf="parent"
@@ -22,23 +24,43 @@
                 android:id="@+id/cl_text"
                 android:background="@color/colorWhite"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="65dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="15dp">
 
-            <TextView
+            <com.example.basicframework.ui.custom.ExpandableTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tv_text"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/sp_14"
+                    android:id="@+id/tv_expand"
+                    expandableTextView:animAlphaStart="1"
+                    expandableTextView:maxCollapsedLines="4"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginStart="65dp"
-                    android:layout_marginEnd="16dp"/>
+                    app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                        android:id="@id/expandable_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="sans-serif-light"
+                        android:textColor="#666666"
+                        android:textSize="16sp" />
+
+                <ImageButton
+                        android:id="@id/expand_collapse"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:padding="16dp" />
+
+            </com.example.basicframework.ui.custom.ExpandableTextView>
         </android.support.constraint.ConstraintLayout>
 
         <include layout="@layout/include_square_bottom_view"/>

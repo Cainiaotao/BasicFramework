@@ -17,6 +17,7 @@ import com.example.basicframework.bean.MeViewContent
 import com.example.basicframework.bean.enums.MeItemType
 import com.example.basicframework.bean.enums.MeViewType
 import com.example.basicframework.ui.activity.CalendarActivity
+import com.example.basicframework.ui.activity.DrawerCameraActivity
 import com.example.basicframework.ui.adapter.MeListAdapter
 import java.text.SimpleDateFormat
 import java.util.*
@@ -39,7 +40,7 @@ class MeFragment: BaseFragment() {
             MeViewContent(MeViewType.One,0,"Me",MeItemType.Info),
             MeViewContent(MeViewType.TWo,R.mipmap.btn_me_data,"支付",MeItemType.Other),
             MeViewContent(MeViewType.TWo,R.mipmap.btn_me_data_day,"收藏",MeItemType.Other),
-            MeViewContent(MeViewType.TWo,R.mipmap.btn_me_faq,"相册",MeItemType.Other),
+            MeViewContent(MeViewType.TWo,R.mipmap.btn_me_faq,"相册",MeItemType.Camera),
             MeViewContent(MeViewType.TWo,R.mipmap.btn_me_faq_new,"时间弹窗",MeItemType.TimePicker),
             MeViewContent(MeViewType.TWo,R.mipmap.btn_me_faq_new,"日历弹窗",MeItemType.DatePicker),
             MeViewContent(MeViewType.TWo,R.mipmap.btn_me_settings,"日历",MeItemType.Calender),
@@ -53,6 +54,7 @@ class MeFragment: BaseFragment() {
                    MeItemType.DatePicker->{dateDialog()}
                    MeItemType.Info->{}
                    MeItemType.Other->{}
+                   MeItemType.Camera->{startActivity(Intent(activity!!,DrawerCameraActivity::class.java))}
                    MeItemType.TimePicker->{timeDialog("")}
                }
             }

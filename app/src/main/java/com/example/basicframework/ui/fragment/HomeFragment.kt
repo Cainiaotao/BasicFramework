@@ -9,10 +9,12 @@ import android.view.View
 import android.widget.TextView
 import com.example.basicframework.R
 import com.example.basicframework.base.BaseFragment
+import com.example.basicframework.base.bus.OpenDrawerBus
 import com.example.basicframework.constans.Constant
 import com.example.basicframework.ui.adapter.HomePagerAdapter
 import com.example.basicframework.ui.fragment.home.NewsListFragment
 import kotlinx.android.synthetic.main.fragment_home.*
+import org.greenrobot.eventbus.EventBus
 
 class HomeFragment :BaseFragment() {
 
@@ -71,6 +73,7 @@ class HomeFragment :BaseFragment() {
     override fun initEvent() {
         super.initEvent()
         tablay?.addOnTabSelectedListener(onTabSelectedListener)
+        tv_menu.setOnClickListener { openDrawerView() }
     }
 
     private val onTabSelectedListener:TabLayout.OnTabSelectedListener = object :TabLayout.OnTabSelectedListener{
@@ -88,6 +91,10 @@ class HomeFragment :BaseFragment() {
 //            viewPager?.currentItem = item!!.position
         }
 
+    }
+
+    private fun openDrawerView(){
+        EventBus.getDefault().post(OpenDrawerBus(true))
     }
 
     override fun onDestroy() {

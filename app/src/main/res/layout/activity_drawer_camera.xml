@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             android:id="@+id/drawerLay"
+                                             android:fitsSystemWindows="true"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent">
+
+    <include layout="@layout/activity_camera_main"/>
+
+    <android.support.constraint.ConstraintLayout
+            android:id="@+id/navigation_view"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_gravity="start"
+            android:layout_marginRight="-65dp"
+            android:background="@color/color_007efa"
+            android:fitsSystemWindows="true">
+
+        <TextView
+                android:id="@+id/tv_text"
+                android:text="侧滑页面"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+    </android.support.constraint.ConstraintLayout>
+    <!--<android.support.design.widget.NavigationView-->
+            <!--android:id="@+id/navigation_view"-->
+
+            <!--app:headerLayout="@layout/navigation_camera_header_main"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"/>-->
+</android.support.v4.widget.DrawerLayout>

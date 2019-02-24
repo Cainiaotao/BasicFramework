@@ -287,6 +287,7 @@ public class ExpandableTextView extends LinearLayout implements View.OnClickList
 
     private void findViews() {
         mTv = (TextView) findViewById(mExpandableTextId);
+        // 禁用显示内容区域点击事件
 //        if (mExpandToggleOnTextClick) {
 //            mTv.setOnClickListener(this);
 //        } else {

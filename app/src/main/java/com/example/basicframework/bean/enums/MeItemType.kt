@@ -1,5 +1,5 @@
 package com.example.basicframework.bean.enums
 
 enum class MeItemType {
-    Info,Calender,Setting,Other,DatePicker,TimePicker
+    Info,Calender,Setting,Other,DatePicker,TimePicker,Camera
 }

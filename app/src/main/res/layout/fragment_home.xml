@@ -9,12 +9,14 @@
             android:id="@+id/appBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
         <android.support.constraint.ConstraintLayout
                 android:id="@+id/clay_title"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:background="@color/color_007efa"
                 app:layout_scrollFlags="scroll|enterAlways">
+
             <TextView
                     android:id="@+id/tv_title"
                     android:text="Home"
@@ -27,6 +29,18 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                    android:text="菜单"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/tv_menu"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
         </android.support.constraint.ConstraintLayout>
         <android.support.design.widget.TabLayout
                 android:id="@+id/home_tab"

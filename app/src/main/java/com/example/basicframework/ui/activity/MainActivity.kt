@@ -3,14 +3,18 @@ package com.example.basicframework.ui.activity
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
+import android.support.v4.widget.DrawerLayout
+import android.view.Gravity
 import com.example.basicframework.R
 import com.example.basicframework.base.BaseActivity
+import com.example.basicframework.base.bus.OpenDrawerBus
 import com.example.basicframework.ui.fragment.DiscoverFragment
 import com.example.basicframework.ui.fragment.HomeFragment
 import com.example.basicframework.ui.fragment.MeFragment
 import com.example.basicframework.ui.fragment.OtherFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class MainActivity :BaseActivity() {
 
@@ -26,6 +30,7 @@ class MainActivity :BaseActivity() {
         super.initView(savedInstanceState)
         //setStatusBarColor()
         selectedTab(HomeFragment::class.java.name)
+        registerEventBus(this)
     }
 
     override fun initData() {
@@ -53,6 +58,7 @@ class MainActivity :BaseActivity() {
                         addFragment(homeFragment!!)
                     }
                 }
+                OpenDrawerLockModel(true)
             }
             OtherFragment::class.java.name -> {
                 if (otherFragment == null) {
@@ -65,6 +71,7 @@ class MainActivity :BaseActivity() {
                         addFragment(otherFragment!!)
                     }
                 }
+                OpenDrawerLockModel(false)
             }
             DiscoverFragment::class.java.name -> {
                 if (discoverFragment == null) {
@@ -77,6 +84,7 @@ class MainActivity :BaseActivity() {
                         addFragment(discoverFragment!!)
                     }
                 }
+                OpenDrawerLockModel(false)
             }
             MeFragment::class.java.name -> {
                 if (meFragment == null) {
@@ -89,6 +97,7 @@ class MainActivity :BaseActivity() {
                         addFragment(meFragment!!)
                     }
                 }
+                OpenDrawerLockModel(false)
             }
         }
         selectedColor(name)
@@ -142,5 +151,25 @@ class MainActivity :BaseActivity() {
         else
             supportFragmentManager.beginTransaction().show(fragment).commitAllowingStateLoss()
         currentShowFragment = fragment
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public fun onDrawer(bus:OpenDrawerBus){
+        if (bus.isOpen){
+            drawer.openDrawer(Gravity.LEFT)
+        }
+    }
+
+    private fun OpenDrawerLockModel(open:Boolean){
+        if (open){
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+        }else{
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unRegisterEventBus(this)
     }
 }

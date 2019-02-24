@@ -1,9 +1,11 @@
 package com.example.basicframework.base
 
+import android.content.Context
 import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.v7.app.AppCompatActivity
 import com.example.basicframework.R
+import com.example.basicframework.ui.activity.MainActivity
 import com.example.basicframework.ui.statusbar.Eyes
 import com.example.basicframework.utils.AppManager
 import org.greenrobot.eventbus.EventBus
@@ -55,11 +57,11 @@ abstract class BaseActivity : AppCompatActivity() {
         return EventBus.getDefault().isRegistered(subscribe)
     }
 
-    fun registerEventBus(subscribe:Object){
+    fun registerEventBus(subscribe: Context){
         EventBus.getDefault().register(subscribe)
     }
 
-    fun unRegisterEventBus(subscribe:Object){
+    fun unRegisterEventBus(subscribe: Context){
         EventBus.getDefault().unregister(subscribe)
     }
 }

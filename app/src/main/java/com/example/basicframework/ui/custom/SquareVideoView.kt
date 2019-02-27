@@ -16,11 +16,11 @@ class SquareVideoView: ConstraintLayout {
     }
 
     fun setContent(info: NewsBean){
-        if (TextUtils.isEmpty(info.textContent)){
-            tv_text.visibility = View.GONE
-        }else{
-            tv_text.text = info.textContent
-            tv_text.visibility = View.VISIBLE
-        }
+//        if (TextUtils.isEmpty(info.textContent)){
+//            tv_text.visibility = View.GONE
+//        }else{
+//            tv_text.text = info.textContent
+//            tv_text.visibility = View.VISIBLE
+//        }
     }
 }

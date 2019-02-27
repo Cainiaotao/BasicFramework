@@ -15,7 +15,7 @@ class DiscoverFragment: BaseFragment() {
 
     override fun initData() {
         super.initData()
-        expand_text.text = getString(R.string.dummy_text1)
-        va_view.startAnimation()
+//        expand_text.text = getString(R.string.dummy_text1)
+//        va_view.startAnimation()
     }
 }

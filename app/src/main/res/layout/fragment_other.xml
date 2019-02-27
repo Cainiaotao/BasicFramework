@@ -12,8 +12,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="46dp">
 
+        <include layout="@layout/include_other_expandlist_view"/>
     </android.support.constraint.ConstraintLayout>
 
     <include layout="@layout/include_bottom_sheet_view"/>

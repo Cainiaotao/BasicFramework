@@ -18,6 +18,7 @@ import com.example.basicframework.bean.enums.MeItemType
 import com.example.basicframework.bean.enums.MeViewType
 import com.example.basicframework.ui.activity.CalendarActivity
 import com.example.basicframework.ui.activity.DrawerCameraActivity
+import com.example.basicframework.ui.activity.MeSettingActivity
 import com.example.basicframework.ui.adapter.MeListAdapter
 import java.text.SimpleDateFormat
 import java.util.*
@@ -50,7 +51,7 @@ class MeFragment: BaseFragment() {
             override fun OnItemClick(type: MeItemType) {
                when(type){
                    MeItemType.Calender->{startActivity(Intent(activity!!,CalendarActivity::class.java))}
-                   MeItemType.Setting->{}
+                   MeItemType.Setting->{startActivity(Intent(activity!!,MeSettingActivity::class.java))}
                    MeItemType.DatePicker->{dateDialog()}
                    MeItemType.Info->{}
                    MeItemType.Other->{}

@@ -6,6 +6,7 @@ import com.example.basicframework.R
 import com.example.basicframework.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_discover.*
 
+
 class DiscoverFragment: BaseFragment() {
     override fun setContentView(): Int = R.layout.fragment_discover
 
@@ -15,7 +16,8 @@ class DiscoverFragment: BaseFragment() {
 
     override fun initData() {
         super.initData()
-//        expand_text.text = getString(R.string.dummy_text1)
-//        va_view.startAnimation()
+        //val indicator:String = "com.example.basicframework.ui.custom.anim.CustomIndicator"
+        //avLoad.setIndicator(indicator)
+        //av.hide()
     }
 }

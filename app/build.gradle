@@ -59,4 +59,5 @@ dependencies {
     implementation 'cn.jzvd:jiaozivideoplayer:6.4.1'
     // <仿微信朋友圈查看图片>
     implementation 'ch.ielse:imagewatcher:1.0.3'
+    implementation project(':library')
 }

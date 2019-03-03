@@ -11,6 +11,10 @@ class NewsBean {
 
     var video:Boolean = false//视频是否有
 
+    var labels = ArrayList<String>()
+
+    var isExpand:Boolean = false//是否展开
+
     constructor(user: UserInfo?, textContent: String, imgs: ArrayList<Int>?, voice: Boolean, video: Boolean) {
         this.user = user
         this.textContent = textContent

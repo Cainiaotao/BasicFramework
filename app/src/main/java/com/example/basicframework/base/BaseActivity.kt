@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.v7.app.AppCompatActivity
+import android.widget.Toast
 import com.example.basicframework.R
 import com.example.basicframework.ui.activity.MainActivity
 import com.example.basicframework.ui.statusbar.Eyes
@@ -63,5 +64,10 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun unRegisterEventBus(subscribe: Context){
         EventBus.getDefault().unregister(subscribe)
+    }
+
+    //show
+    fun showToast(context:Context,str:String){
+        Toast.makeText(context,str,Toast.LENGTH_SHORT).show()
     }
 }

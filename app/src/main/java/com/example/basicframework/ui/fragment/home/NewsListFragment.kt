@@ -12,7 +12,8 @@ import com.example.basicframework.ui.adapter.recycler.NewsListAdapter
 import com.github.jdsjlzx.recyclerview.LuRecyclerViewAdapter
 import kotlinx.android.synthetic.main.fragment_news_list.*
 
-class NewsListFragment:LazyLoadFragment(), SwipeRefreshLayout.OnRefreshListener {
+class NewsListFragment:LazyLoadFragment(), SwipeRefreshLayout.OnRefreshListener ,NewsListAdapter.OnItemListener{
+
 
 
     private var pagerModel:String=""
@@ -38,6 +39,7 @@ class NewsListFragment:LazyLoadFragment(), SwipeRefreshLayout.OnRefreshListener 
 
     private fun initListView(){
         newsAdapter = NewsListAdapter(activity!!,newsList)
+        newsAdapter!!.setOnItemListener(this)
         luAdapter = LuRecyclerViewAdapter(newsAdapter)
         recyclerView.layoutManager = LinearLayoutManager(activity!!)
         recyclerView.adapter = luAdapter
@@ -57,9 +59,12 @@ class NewsListFragment:LazyLoadFragment(), SwipeRefreshLayout.OnRefreshListener 
     }
 
     override fun onRefresh() {
+        // 下拉刷新
         swipe.isRefreshing = true
         for (i in 0 until 20){
-            newsList.add(NewsBean(UserInfo("name:$i"),getString(R.string.dummy_text1),null,false,false))
+            val bean = NewsBean(UserInfo("name:$i"),getString(R.string.dummy_text1),null,false,false)
+            bean.labels = arrayListOf("成都","小酒馆","大学校园","奇葩说")
+            newsList.add(bean)
         }
         newsList.add(0, NewsBean(null,"",null,false,false))
         newsList.add(2,NewsBean(UserInfo("name:pic1"),"居中大图+文本", arrayListOf(1),false,false))
@@ -78,7 +83,18 @@ class NewsListFragment:LazyLoadFragment(), SwipeRefreshLayout.OnRefreshListener 
         onRefreshFinish()
     }
     private fun onLoadMoreData(){
-
+        //TODO 加载更多
     }
+
+    override fun onSelectLabel(label: String) {
+        showToast(activity!!,label)
+    }
+
+    override fun onExpandState(isExpand: Boolean,position:Int) {
+        val state = newsList[position]
+        state.isExpand = isExpand
+        newsAdapter?.notifyItemChanged(position)
+    }
+
 
 }

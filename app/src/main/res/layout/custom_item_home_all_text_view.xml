@@ -30,37 +30,15 @@
                 android:layout_marginBottom="5dp"
                 android:layout_marginRight="15dp">
 
-            <com.example.basicframework.ui.custom.ExpandableTextView
+            <com.example.basicframework.ui.custom.TopicExpandTextView
+                    android:id="@+id/expand"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tv_expand"
-                    expandableTextView:animAlphaStart="1"
-                    expandableTextView:maxCollapsedLines="4"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                        android:id="@id/expandable_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="8dp"
-                        android:fontFamily="sans-serif-light"
-                        android:textColor="#666666"
-                        android:textSize="16sp" />
-
-                <ImageButton
-                        android:id="@id/expand_collapse"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@android:color/transparent"
-                        android:padding="16dp" />
-
-            </com.example.basicframework.ui.custom.ExpandableTextView>
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
         </android.support.constraint.ConstraintLayout>
 
         <include layout="@layout/include_square_bottom_view"/>

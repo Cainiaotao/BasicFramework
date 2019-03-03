@@ -12,6 +12,8 @@ import com.example.basicframework.ui.custom.*
 
 class NewsListAdapter(var mContext:Context,val list:ArrayList<NewsBean>):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    private var onItemListener:OnItemListener?=null
+
     private val ITEM_SEARCH = 110 //搜索
     private val ITEM_ALL_TEXT = 111 //纯文本
     private val ITEM_CENTER_PIC_TEXT =112 //居中大图 + 文本
@@ -70,6 +72,18 @@ class NewsListAdapter(var mContext:Context,val list:ArrayList<NewsBean>):Recycle
             is  AlltextItemHolder->{
                 val txtType = holder.itemView as SquareAllTextView
                 txtType.setContent(item)
+                txtType.setOnLabelClickListener(object :SquareAllTextView.OnLabelClickListener{
+                    override fun onSelectLabel(label: String) {
+                        //Label click listener
+                        onItemListener?.onSelectLabel(label)
+                    }
+                })
+                txtType.setExpandState(item.isExpand)
+                txtType.setExpandStateListener(object :SquareAllTextView.OnExpandStateListener{
+                    override fun onExpandState(isExpand: Boolean) {
+                        onItemListener?.onExpandState(isExpand,position)
+                    }
+                })
             }
             is PicCenterItemHolder->{
                 val picType  = holder.itemView as SquarePicCenterView
@@ -98,4 +112,14 @@ class NewsListAdapter(var mContext:Context,val list:ArrayList<NewsBean>):Recycle
     class PicMoreItemHolder(view:View):RecyclerView.ViewHolder(view)
     class VoiceItemHolder(view:View):RecyclerView.ViewHolder(view)
     class VideoItemHolder(view:View):RecyclerView.ViewHolder(view)
+
+
+    interface OnItemListener{
+        fun onSelectLabel(label:String)
+        fun onExpandState(isExpand:Boolean,position: Int)
+    }
+
+    fun setOnItemListener(onItemListener:OnItemListener){
+        this.onItemListener = onItemListener
+    }
 }

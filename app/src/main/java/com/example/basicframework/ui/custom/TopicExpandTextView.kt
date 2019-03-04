@@ -10,8 +10,12 @@ import android.text.method.LinkMovementMethod
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
 import com.example.basicframework.R
+import com.example.basicframework.ui.flowlayout.FlowLayout
+import com.example.basicframework.ui.flowlayout.TagAdapter
 import com.example.basicframework.utils.SquareClickable
+import kotlinx.android.synthetic.main.activity_me_setting.*
 import kotlinx.android.synthetic.main.custom_expand_text_view.view.*
 import kotlinx.android.synthetic.main.include_other_expandlist_view.view.*
 
@@ -19,9 +23,13 @@ class TopicExpandTextView:ConstraintLayout {
 
     private var onLabelListener:OnLabelClickListener?=null
     private var onExpandListener:OnExpandListener?=null
+    private var onflowTagClickListener:OnflowTagClickListener? =null
     private var showLine:Int = 5
     private var isExpand:Boolean = false
     private var content:String = ""
+    private var tagAdapter: TagAdapter<String>?=null
+    private var labels:ArrayList<String>?= ArrayList()
+
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs){
         LayoutInflater.from(context).inflate(R.layout.custom_expand_text_view,this)
         init()
@@ -40,6 +48,12 @@ class TopicExpandTextView:ConstraintLayout {
                 onExpandListener?.onExpand()
             }
         }
+
+        tag_fll.setOnTagClickListener { view, position, parent ->
+            onflowTagClickListener?.onClickTag(this.labels!![position])
+            return@setOnTagClickListener true
+        }
+
 // ExpandTextView
 //        tv_content.setOnExpandStateListener(object :ExpandTextView.OnExpandListener{
 //            override fun onExpand() {
@@ -52,16 +66,32 @@ class TopicExpandTextView:ConstraintLayout {
 //        })
     }
 
+    fun setflowLayout(labels:ArrayList<String>){
+        this.labels = labels
+        tagAdapter = object :TagAdapter<String>(labels){
+            override fun getView(parent: FlowLayout?, position: Int, t: String?): View {
+                val view=  LayoutInflater.from(context).inflate(R.layout.include_text_view,tag_fll,false)
+                val tv: TextView = view.findViewById(R.id.tv_test)
+                tv.text = "#$t"
+                return view
+            }
+        }
+        tag_fll.adapter = tagAdapter
+    }
+
+
    fun onExpandContent(isExpand:Boolean){
         // recyclerView list 复用会无效
         if (isExpand){
             tv_content.maxLines = Integer.MAX_VALUE
             tv_expand.text ="收起"
             this.isExpand = isExpand
+            tag_fll.visibility = View.VISIBLE
         }else{
             tv_content.maxLines = showLine
             tv_expand.text ="展开"
             this.isExpand = isExpand
+            tag_fll.visibility = View.GONE
         }
         // item bean 中添加 展开状态
 
@@ -105,6 +135,10 @@ class TopicExpandTextView:ConstraintLayout {
         this.onExpandListener = onExpandListener
     }
 
+    fun setOnflowTagClickListener(onflowTagClickListener:OnflowTagClickListener){
+        this.onflowTagClickListener = onflowTagClickListener
+    }
+
     interface OnLabelClickListener{
         fun onSelectLabel(label:String)
     }
@@ -112,6 +146,10 @@ class TopicExpandTextView:ConstraintLayout {
     interface OnExpandListener{
         fun onExpand()
         fun onCollapse()
+    }
+
+    interface OnflowTagClickListener{
+        fun onClickTag(str: String)
     }
 
 }

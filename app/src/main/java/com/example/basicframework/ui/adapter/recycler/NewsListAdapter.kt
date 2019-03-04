@@ -84,6 +84,13 @@ class NewsListAdapter(var mContext:Context,val list:ArrayList<NewsBean>):Recycle
                         onItemListener?.onExpandState(isExpand,position)
                     }
                 })
+
+                txtType.setOnFlowTagClickListener(object :SquareAllTextView.OnFlowTagClickListener{
+                    override fun onFlowTag(string: String) {
+                        onItemListener?.onSelectLabel(string)
+                    }
+                })
+
             }
             is PicCenterItemHolder->{
                 val picType  = holder.itemView as SquarePicCenterView

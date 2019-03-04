@@ -15,6 +15,7 @@ class SquareAllTextView : ConstraintLayout {
 
     private var onLabelClickListener:OnLabelClickListener?=null
     private var onExpandStateListener:OnExpandStateListener?=null
+    private var onFlowTagClickListener:OnFlowTagClickListener?=null
 
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs){
         LayoutInflater.from(context).inflate(R.layout.custom_item_home_all_text_view,this)
@@ -30,7 +31,12 @@ class SquareAllTextView : ConstraintLayout {
             override fun onCollapse() {
                 onExpandStateListener?.onExpandState(false)
             }
+        })
 
+        expand.setOnflowTagClickListener(object :TopicExpandTextView.OnflowTagClickListener{
+            override fun onClickTag(str: String) {
+                onFlowTagClickListener?.onFlowTag(str)
+            }
         })
     }
 
@@ -43,9 +49,14 @@ class SquareAllTextView : ConstraintLayout {
         this.onExpandStateListener = onExpandStateListener
     }
 
+    fun setOnFlowTagClickListener(onFlowTagClickListener:OnFlowTagClickListener){
+        this.onFlowTagClickListener = onFlowTagClickListener
+    }
+
     fun setContent(info: NewsBean){
         tv_name.text = info.user!!.name
         expand.setContent(info.textContent)
+        expand.setflowLayout(info.labels)
         if (info.labels.size>0){
             info.labels.forEach {
                 expand.setSpanContext(" #$it")
@@ -68,5 +79,9 @@ class SquareAllTextView : ConstraintLayout {
 
     interface OnExpandStateListener{
         fun onExpandState(isExpand: Boolean)
+    }
+
+    interface OnFlowTagClickListener{
+        fun onFlowTag(string: String)
     }
 }

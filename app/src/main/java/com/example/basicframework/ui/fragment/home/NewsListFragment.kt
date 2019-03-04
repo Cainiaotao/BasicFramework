@@ -63,7 +63,7 @@ class NewsListFragment:LazyLoadFragment(), SwipeRefreshLayout.OnRefreshListener 
         swipe.isRefreshing = true
         for (i in 0 until 20){
             val bean = NewsBean(UserInfo("name:$i"),getString(R.string.dummy_text1),null,false,false)
-            bean.labels = arrayListOf("成都","小酒馆","大学校园","奇葩说")
+            bean.labels = arrayListOf("让你感到孤独的瞬间","孤独患者","大学校园","最后一次见面","浓烈的爱vs沉默的爱")
             newsList.add(bean)
         }
         newsList.add(0, NewsBean(null,"",null,false,false))

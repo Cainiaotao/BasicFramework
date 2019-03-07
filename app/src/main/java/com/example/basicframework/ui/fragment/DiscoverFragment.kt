@@ -16,8 +16,9 @@ class DiscoverFragment: BaseFragment() {
 
     override fun initData() {
         super.initData()
-        //val indicator:String = "com.example.basicframework.ui.custom.anim.CustomIndicator"
-        //avLoad.setIndicator(indicator)
-        //av.hide()
+        tv_expand.text = getString(R.string.dummy_text1)
+//        btn_expand.setOnClickListener {
+//            tv_expand.onClickStatus()
+//        }
     }
 }

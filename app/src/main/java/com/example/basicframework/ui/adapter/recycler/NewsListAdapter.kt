@@ -72,25 +72,21 @@ class NewsListAdapter(var mContext:Context,val list:ArrayList<NewsBean>):Recycle
             is  AlltextItemHolder->{
                 val txtType = holder.itemView as SquareAllTextView
                 txtType.setContent(item)
-                txtType.setOnLabelClickListener(object :SquareAllTextView.OnLabelClickListener{
-                    override fun onSelectLabel(label: String) {
-                        //Label click listener
-                        onItemListener?.onSelectLabel(label)
+                txtType.setOnViewListener(object :SquareAllTextView.OnViewListener{
+                    override fun onSpannedLabel(str: String) {
+                        onItemListener?.onSelectLabel(str)
                     }
-                })
-                txtType.setExpandState(item.isExpand)
-                txtType.setExpandStateListener(object :SquareAllTextView.OnExpandStateListener{
+
+                    override fun onLabel(str: String) {
+                        onItemListener?.onSelectLabel(str)
+                    }
+
                     override fun onExpandState(isExpand: Boolean) {
+                        item.isExpand = isExpand
                         onItemListener?.onExpandState(isExpand,position)
                     }
                 })
-
-                txtType.setOnFlowTagClickListener(object :SquareAllTextView.OnFlowTagClickListener{
-                    override fun onFlowTag(string: String) {
-                        onItemListener?.onSelectLabel(string)
-                    }
-                })
-
+                txtType.setExpandState(item.isExpand)
             }
             is PicCenterItemHolder->{
                 val picType  = holder.itemView as SquarePicCenterView

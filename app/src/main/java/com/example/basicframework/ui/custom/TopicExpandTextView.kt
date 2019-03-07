@@ -10,25 +10,26 @@ import android.text.method.LinkMovementMethod
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.basicframework.R
 import com.example.basicframework.ui.flowlayout.FlowLayout
 import com.example.basicframework.ui.flowlayout.TagAdapter
+import com.example.basicframework.ui.widget.NewExpandTextView
 import com.example.basicframework.utils.SquareClickable
 import kotlinx.android.synthetic.main.activity_me_setting.*
 import kotlinx.android.synthetic.main.custom_expand_text_view.view.*
 import kotlinx.android.synthetic.main.include_other_expandlist_view.view.*
 
-class TopicExpandTextView:ConstraintLayout {
+class TopicExpandTextView: LinearLayout {
 
-    private var onLabelListener:OnLabelClickListener?=null
-    private var onExpandListener:OnExpandListener?=null
-    private var onflowTagClickListener:OnflowTagClickListener? =null
-    private var showLine:Int = 5
+    private var onExpandViewListener:OnExpandViewListener?=null
     private var isExpand:Boolean = false
     private var content:String = ""
     private var tagAdapter: TagAdapter<String>?=null
     private var labels:ArrayList<String>?= ArrayList()
+    private var isState:Boolean = false
+
 
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs){
         LayoutInflater.from(context).inflate(R.layout.custom_expand_text_view,this)
@@ -36,34 +37,51 @@ class TopicExpandTextView:ConstraintLayout {
     }
 
     private fun init(){
-        tv_expand.text ="展开"
         tv_expand.setOnClickListener {
             if (isExpand){
                 isExpand = false
-                onExpandContent(isExpand)
-                onExpandListener?.onCollapse()
+                tv_expand.text ="展开"
+                tag_fll.visibility = View.GONE
+                tv_content.onClickStatus()
+                onExpandViewListener?.onExpandState(false)
             }else{
                 isExpand = true
-                onExpandContent(isExpand)
-                onExpandListener?.onExpand()
+                tv_expand.text ="收起"
+                tv_content.onClickStatus()
+                tag_fll.visibility = View.VISIBLE
+                onExpandViewListener?.onExpandState(true)
             }
+
         }
 
         tag_fll.setOnTagClickListener { view, position, parent ->
-            onflowTagClickListener?.onClickTag(this.labels!![position])
+            onExpandViewListener?.onClickTag(this.labels!![position])
             return@setOnTagClickListener true
         }
 
-// ExpandTextView
-//        tv_content.setOnExpandStateListener(object :ExpandTextView.OnExpandListener{
-//            override fun onExpand() {
-//
-//            }
-//
-//            override fun onCollapse() {
-//
-//            }
-//        })
+        tv_content.setOnExpandStateChangeListener(object :NewExpandTextView.OnExpandStateChangeListener{
+            override fun onChangeStateStart(willExpand: Boolean) {
+
+            }
+
+            override fun onExpandStateChanged(textView: TextView?, isExpanded: Boolean) {
+                isState = isExpand
+            }
+        })
+
+    }
+
+    fun setExpand(state:Boolean){
+        isExpand = state
+        if (isExpand){
+            tv_content.onClickStatus()
+            tv_expand.text ="收起"
+            tag_fll.visibility = View.VISIBLE
+        }else{
+            tv_expand.text ="展开"
+            tag_fll.visibility = View.GONE
+        }
+
     }
 
     fun setflowLayout(labels:ArrayList<String>){
@@ -80,30 +98,6 @@ class TopicExpandTextView:ConstraintLayout {
     }
 
 
-   fun onExpandContent(isExpand:Boolean){
-        // recyclerView list 复用会无效
-        if (isExpand){
-            tv_content.maxLines = Integer.MAX_VALUE
-            tv_expand.text ="收起"
-            this.isExpand = isExpand
-            tag_fll.visibility = View.VISIBLE
-        }else{
-            tv_content.maxLines = showLine
-            tv_expand.text ="展开"
-            this.isExpand = isExpand
-            tag_fll.visibility = View.GONE
-        }
-        // item bean 中添加 展开状态
-
-        //解决 list 复用 item bean 中添加 展开状态 ExpandTextVIew
-//        if (isExpand){
-//            tv_expand.text ="收起"
-//        }else{
-//            tv_expand.text ="展开"
-//        }
-//        tv_content.setChanged(isExpand)
-    }
-
     fun setContent(str:String){
         //设置部分字体颜色
 //        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N){
@@ -112,7 +106,6 @@ class TopicExpandTextView:ConstraintLayout {
 //            tv_content.text = Html.fromHtml(str)
 //        }
         content = str
-        //tv_content.setContent(content,false) ExpandTextVIew
         tv_content.text = str
     }
 
@@ -121,35 +114,22 @@ class TopicExpandTextView:ConstraintLayout {
         tv_content.setHintTextColor(ContextCompat.getColor(context,android.R.color.transparent))
         span.setSpan(SquareClickable(context,str,
             SquareClickable.OnClickSpanListener { span ->
-                onLabelListener?.onSelectLabel(span)
+                onExpandViewListener?.onSelectLabel(span)
             }),0,str.length,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         tv_content.append(span)
         tv_content.movementMethod = LinkMovementMethod.getInstance()
     }
 
-    fun setOnLabelClickListener(onLabelListener:OnLabelClickListener){
-        this.onLabelListener = onLabelListener
+    fun setOnExpandViewListener(onExpandViewListener:OnExpandViewListener){
+        this.onExpandViewListener = onExpandViewListener
     }
 
-    fun setOnExpandListener(onExpandListener:OnExpandListener){
-        this.onExpandListener = onExpandListener
-    }
-
-    fun setOnflowTagClickListener(onflowTagClickListener:OnflowTagClickListener){
-        this.onflowTagClickListener = onflowTagClickListener
-    }
-
-    interface OnLabelClickListener{
+    interface OnExpandViewListener{
         fun onSelectLabel(label:String)
-    }
-
-    interface OnExpandListener{
-        fun onExpand()
-        fun onCollapse()
-    }
-
-    interface OnflowTagClickListener{
         fun onClickTag(str: String)
+        fun onExpandState(isExpand:Boolean)
     }
+
+
 
 }

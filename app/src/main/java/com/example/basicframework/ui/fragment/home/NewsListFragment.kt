@@ -2,6 +2,7 @@ package com.example.basicframework.ui.fragment.home
 
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import com.example.basicframework.R
 import com.example.basicframework.base.LazyLoadFragment
@@ -9,6 +10,7 @@ import com.example.basicframework.bean.NewsBean
 import com.example.basicframework.bean.UserInfo
 import com.example.basicframework.constans.Constant
 import com.example.basicframework.ui.adapter.recycler.NewsListAdapter
+import com.github.jdsjlzx.recyclerview.LuRecyclerView
 import com.github.jdsjlzx.recyclerview.LuRecyclerViewAdapter
 import kotlinx.android.synthetic.main.fragment_news_list.*
 
@@ -43,7 +45,22 @@ class NewsListFragment:LazyLoadFragment(), SwipeRefreshLayout.OnRefreshListener 
         luAdapter = LuRecyclerViewAdapter(newsAdapter)
         recyclerView.layoutManager = LinearLayoutManager(activity!!)
         recyclerView.adapter = luAdapter
+        //recyclerView.itemAnimator = null
         recyclerView.setOnLoadMoreListener { onLoadMoreData() }
+        recyclerView.setLScrollListener(object :LuRecyclerView.LScrollListener{
+            override fun onScrolled(distanceX: Int, distanceY: Int) {
+            }
+
+            override fun onScrollUp() {
+            }
+
+            override fun onScrollDown() {
+            }
+
+            override fun onScrollStateChanged(state: Int) {
+
+            }
+        })
         onRefresh()
     }
 
@@ -93,8 +110,9 @@ class NewsListFragment:LazyLoadFragment(), SwipeRefreshLayout.OnRefreshListener 
     override fun onExpandState(isExpand: Boolean,position:Int) {
         val state = newsList[position]
         state.isExpand = isExpand
-        newsAdapter?.notifyItemChanged(position)
+        newsAdapter?.notifyDataSetChanged()
     }
+
 
 
 }

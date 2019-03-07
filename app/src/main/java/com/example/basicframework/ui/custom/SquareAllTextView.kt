@@ -13,9 +13,8 @@ import kotlinx.android.synthetic.main.include_square_top_view.view.*
 
 class SquareAllTextView : ConstraintLayout {
 
-    private var onLabelClickListener:OnLabelClickListener?=null
-    private var onExpandStateListener:OnExpandStateListener?=null
-    private var onFlowTagClickListener:OnFlowTagClickListener?=null
+
+    private var listener:OnViewListener?=null
 
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs){
         LayoutInflater.from(context).inflate(R.layout.custom_item_home_all_text_view,this)
@@ -23,35 +22,26 @@ class SquareAllTextView : ConstraintLayout {
     }
 
     private fun init(){
-        expand.setOnExpandListener(object :TopicExpandTextView.OnExpandListener{
-            override fun onExpand() {
-                onExpandStateListener?.onExpandState(true)
+
+        expand.setOnExpandViewListener(object :TopicExpandTextView.OnExpandViewListener{
+            override fun onSelectLabel(label: String) {
+                listener?.onSpannedLabel(label)
             }
 
-            override fun onCollapse() {
-                onExpandStateListener?.onExpandState(false)
-            }
-        })
-
-        expand.setOnflowTagClickListener(object :TopicExpandTextView.OnflowTagClickListener{
             override fun onClickTag(str: String) {
-                onFlowTagClickListener?.onFlowTag(str)
+                listener?.onLabel(str)
             }
+
+            override fun onExpandState(isExpand: Boolean) {
+                listener?.onExpandState(isExpand)
+            }
+
         })
+
     }
 
 
-    fun setOnLabelClickListener(onLabelClickListener:OnLabelClickListener){
-        this.onLabelClickListener = onLabelClickListener
-    }
 
-    fun setExpandStateListener(onExpandStateListener:OnExpandStateListener){
-        this.onExpandStateListener = onExpandStateListener
-    }
-
-    fun setOnFlowTagClickListener(onFlowTagClickListener:OnFlowTagClickListener){
-        this.onFlowTagClickListener = onFlowTagClickListener
-    }
 
     fun setContent(info: NewsBean){
         tv_name.text = info.user!!.name
@@ -61,27 +51,20 @@ class SquareAllTextView : ConstraintLayout {
             info.labels.forEach {
                 expand.setSpanContext(" #$it")
             }
-            expand.setOnLabelClickListener(object :TopicExpandTextView.OnLabelClickListener{
-                override fun onSelectLabel(label: String) {
-                    onLabelClickListener?.onSelectLabel(label)
-                }
-            })
         }
     }
 
     fun setExpandState(isExpand:Boolean){
-        expand.onExpandContent(isExpand)
+        expand.setExpand(isExpand)
     }
 
-    interface OnLabelClickListener{
-        fun onSelectLabel(label:String)
+    fun setOnViewListener(listener:OnViewListener){
+        this.listener = listener
     }
 
-    interface OnExpandStateListener{
+    interface OnViewListener{
+        fun onSpannedLabel(str:String)
+        fun onLabel(str: String)
         fun onExpandState(isExpand: Boolean)
-    }
-
-    interface OnFlowTagClickListener{
-        fun onFlowTag(string: String)
     }
 }

@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_me_setting.*
 class MeSettingActivity: BaseActivity() {
 
 
-    private var mlist = arrayOf("Hello", "Android", "Weclome Hi ", "测试", "吉他", "日本",
+    private var mlist = arrayListOf("Hello", "Android", "Weclome Hi ", "测试", "吉他", "日本",
         "中国", "Weclome", "Button ImageView", "抖音", "神曲",
         "四叶草", "甜甜的恋爱", "想恋爱了", "单身狗")
 
@@ -39,11 +39,11 @@ class MeSettingActivity: BaseActivity() {
         tv_expandView.setSpanContext("#测试自定义标签点击")
         tv_expandView.setSpanContext("#北京")
         tv_expandView.setSpanContext("#吉他")
-        tv_expandView.setOnLabelClickListener(object :TopicExpandTextView.OnLabelClickListener{
-            override fun onSelectLabel(label: String) {
-                showToast(this@MeSettingActivity,label)
-            }
-        })
+//        tv_expandView.setOnLabelClickListener(object :TopicExpandTextView.OnLabelClickListener{
+//            override fun onSelectLabel(label: String) {
+//                showToast(this@MeSettingActivity,label)
+//            }
+//        })
     }
 
     private fun showFlowlayout(){
@@ -59,6 +59,7 @@ class MeSettingActivity: BaseActivity() {
         tag_fll.adapter = tagAdapter
         tag_fll.setOnTagClickListener { view, position, parent ->
             showToast(this,mlist[position])
+            mlist.removeAt(position)
             return@setOnTagClickListener true
         }
     }

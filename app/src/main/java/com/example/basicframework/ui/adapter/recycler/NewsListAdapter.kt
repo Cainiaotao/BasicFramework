@@ -99,7 +99,7 @@ class NewsListAdapter(var mContext:Context,val list:ArrayList<NewsBean>):Recycle
             is VoiceItemHolder->{
                 val voiceType = holder.itemView as SquareVoiceView
                 voiceType.setContent(item)
-                voiceType.setOnLongClickListener {
+                holder.itemView.setOnLongClickListener {
                     onItemListener?.onItemLongClick(it)
                     return@setOnLongClickListener false
                 }

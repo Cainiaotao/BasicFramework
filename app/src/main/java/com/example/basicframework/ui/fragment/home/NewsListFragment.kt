@@ -116,7 +116,7 @@ class NewsListFragment:LazyLoadFragment(), SwipeRefreshLayout.OnRefreshListener 
     }
 
     override fun onItemLongClick(view: View){
-
+        showToast(activity!!,"长按")
         popMenu(view)
 
     }
@@ -135,5 +135,6 @@ class NewsListFragment:LazyLoadFragment(), SwipeRefreshLayout.OnRefreshListener 
             }
             return@setOnMenuItemClickListener  false
         }
+        popup.show()
     }
 }

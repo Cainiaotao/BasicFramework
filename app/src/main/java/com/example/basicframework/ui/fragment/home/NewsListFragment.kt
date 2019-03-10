@@ -2,8 +2,10 @@ package com.example.basicframework.ui.fragment.home
 
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
+import android.view.View
 import com.example.basicframework.R
 import com.example.basicframework.base.LazyLoadFragment
 import com.example.basicframework.bean.NewsBean
@@ -113,6 +115,25 @@ class NewsListFragment:LazyLoadFragment(), SwipeRefreshLayout.OnRefreshListener 
         newsAdapter?.notifyDataSetChanged()
     }
 
+    override fun onItemLongClick(view: View){
 
+        popMenu(view)
 
+    }
+
+    //show popupMenu
+    private fun popMenu(view: View){
+        val popup = PopupMenu(activity!!,view)
+        val inflater = popup.menuInflater
+        inflater.inflate(R.menu.item_menu_view,popup.menu)
+        popup.setOnMenuItemClickListener{
+            when(it.itemId){
+                R.id.copy->{
+                    showToast(activity!!,"复制")
+                }
+                R.id.report->{ showToast(activity!!,"举报")}
+            }
+            return@setOnMenuItemClickListener  false
+        }
+    }
 }

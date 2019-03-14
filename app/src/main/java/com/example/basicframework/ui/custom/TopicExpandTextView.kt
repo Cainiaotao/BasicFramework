@@ -59,15 +59,15 @@ class TopicExpandTextView: LinearLayout {
             return@setOnTagClickListener true
         }
 
-        tv_content.setOnExpandStateChangeListener(object :NewExpandTextView.OnExpandStateChangeListener{
-            override fun onChangeStateStart(willExpand: Boolean) {
-
-            }
-
-            override fun onExpandStateChanged(textView: TextView?, isExpanded: Boolean) {
-                isState = isExpand
-            }
-        })
+//        tv_content.setOnExpandStateChangeListener(object :NewExpandTextView.OnExpandStateChangeListener{
+//            override fun onChangeStateStart(willExpand: Boolean) {
+//
+//            }
+//
+//            override fun onExpandStateChanged(textView: TextView?, isExpanded: Boolean) {
+//                isState = isExpand
+//            }
+//        })
 
     }
 

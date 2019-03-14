@@ -9,8 +9,8 @@ import android.view.View
 import cn.jzvd.JzvdStd
 import com.example.basicframework.R
 import com.example.basicframework.bean.NewsBean
-import kotlinx.android.synthetic.main.custom_item_pic_center_view.view.*
-import kotlinx.android.synthetic.main.custom_item_video_view.view.*
+import kotlinx.android.synthetic.main.custom_item_voice_view.view.*
+
 
 class SquareVoiceView: ConstraintLayout {
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs){

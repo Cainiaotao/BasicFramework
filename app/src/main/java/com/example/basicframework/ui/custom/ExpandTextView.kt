@@ -1,72 +1,81 @@
 package com.example.basicframework.ui.custom
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Rect
-import android.support.v7.widget.AppCompatTextView
+import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
-import android.text.Layout
-import android.text.StaticLayout
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.TextView
+import com.example.basicframework.R
+import com.example.basicframework.ui.widget.NewExpandTextView
+import kotlinx.android.synthetic.main.widget_expand_text_view.view.*
 
+class ExpandTextView:ConstraintLayout,NewExpandTextView.OnExpandStateChangeListener{
 
+    private var listener:OnExpandStateListener?=null
+    private var mCollapsed:Boolean = false
+    constructor(context: Context?) : super(context){init()}
+    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs){init()}
+    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr){init()}
 
-class ExpandTextView:AppCompatTextView {
-    private var onExpandListener:OnExpandListener?=null
-    private var isExpand:Boolean = false
-    private var content:String = ""
-    private val maxLineCount:Int = 5
-
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
-
-    @SuppressLint("DrawAllocation")
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        //文字计算
-        val sl = StaticLayout( content,paint,
-            measuredWidth - paddingLeft - paddingRight,
-            Layout.Alignment.ALIGN_CENTER, 1f, 0f, true)
-        var lineCount = sl.lineCount //获取总行数
-        if (lineCount > maxLineCount){
-            if (isExpand){
-                //展开
-                this.text = content
-                onExpandListener?.onExpand()
+    private fun init(){
+        LayoutInflater.from(context).inflate(R.layout.widget_expand_text_view,this)
+        tv_expand.setExpandBtn(btn_expand)
+        btn_expand.setOnClickListener {
+            if (mCollapsed){
+                btn_expand.text = "收起"
+                mCollapsed = false
+                tv_expand.onClickStatus()
+                tv_expand.setCollapsed(false)
+                listener?.onExpandStateChanged(false)
             }else{
-                //收起
-                lineCount = maxLineCount
-                this.text = content
-                onExpandListener?.onCollapse()
+                btn_expand.text = "展开"
+                mCollapsed = true
+                tv_expand.onClickStatus()
+                tv_expand.setCollapsed(true)
+                listener?.onExpandStateChanged(true)
             }
+        }
+        tv_expand.setOnExpandStateChangeListener(this)
+    }
+
+    fun setContext(string: String){
+        tv_expand.text = string
+
+    }
+
+    fun expandState(boolean: Boolean){
+        mCollapsed = boolean
+        tv_expand.onClickStatus()
+        tv_expand.setCollapsed(mCollapsed)
+    }
+
+    override fun onChangeStateStart(willExpand: Boolean) {
+
+    }
+
+    override fun onExpandStateChanged(textView: TextView?, isExpanded: Boolean) {
+
+    }
+
+    override fun onNeedCollapseChanged(needCollapse: Boolean) {
+        if (needCollapse){
+            btn_expand.visibility = View.VISIBLE
+            tv_expand.setCollapsed(false)
+            tv_expand.onClickStatus()
         }else{
-            this.text = content
+            btn_expand.visibility = View.GONE
+            tv_expand.setCollapsed(true)
+            tv_expand.onClickStatus()
         }
-        var lineHeight = 0
-        for (i in 0 until lineCount){
-            val lineBound = Rect()
-            sl.getLineBounds(i,lineBound)
-            lineHeight += lineBound.height()
-        }
-        lineHeight += paddingTop + paddingBottom
-        setMeasuredDimension(measuredWidth,lineHeight)
     }
 
-    interface OnExpandListener{
-        fun onExpand()
-        fun onCollapse()
+    fun setOnExpandStateListener(listener:OnExpandStateListener){
+        this.listener = listener
     }
 
-    fun setContent(str:String,isExpand: Boolean){
-        this.content = str
-        this.isExpand = isExpand
-        this.text = str
+    interface OnExpandStateListener{
+        fun onExpandStateChanged(isCollapsed: Boolean)
     }
 
-    fun setChanged(expanded :Boolean){
-        isExpand = expanded
-        requestLayout()
-    }
-
-    fun setOnExpandStateListener(onExpandListener:OnExpandListener){
-        this.onExpandListener = onExpandListener
-    }
 }

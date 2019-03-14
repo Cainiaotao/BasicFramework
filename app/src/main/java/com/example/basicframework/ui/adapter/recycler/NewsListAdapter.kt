@@ -6,9 +6,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import com.example.basicframework.R
 import com.example.basicframework.bean.NewsBean
 import com.example.basicframework.ui.custom.*
+import com.example.basicframework.ui.widget.CompatExpandTextView
 
 class NewsListAdapter(var mContext:Context,val list:ArrayList<NewsBean>):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -22,35 +24,31 @@ class NewsListAdapter(var mContext:Context,val list:ArrayList<NewsBean>):Recycle
     private val ITEM_VIDEO_TEXT = 115 //视频 + 文本
 
     override fun getItemViewType(position: Int): Int {
-        if (position>0){
-            val isVoice = list[position].voice
-            return if (isVoice){
-                ITEM_VOICE_TEXT
+        val isVoice = list[position].voice
+        return if (isVoice){
+            ITEM_VOICE_TEXT
+        }else{
+            if (list[position].video){
+                ITEM_VIDEO_TEXT
             }else{
-                if (list[position].video){
-                    ITEM_VIDEO_TEXT
-                }else{
-                    val imgSize = list[position].imgs?.size
-                    if (imgSize!=null && imgSize>0){
-                        if (imgSize>1){
-                            ITEM_PIC_MORE_TEXT
-                        }else{
-                            ITEM_CENTER_PIC_TEXT
-                        }
+                val imgSize = list[position].imgs?.size
+                if (imgSize!=null && imgSize>0){
+                    if (imgSize>1){
+                        ITEM_PIC_MORE_TEXT
                     }else{
-                        ITEM_ALL_TEXT
+                        ITEM_CENTER_PIC_TEXT
                     }
+                }else{
+                    ITEM_ALL_TEXT
                 }
             }
-        }else{
-            return ITEM_SEARCH
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup,viewType: Int): RecyclerView.ViewHolder {
         return when(viewType){
-            ITEM_SEARCH->SearchItemHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_home_list_search_view,parent,false))
-            ITEM_ALL_TEXT->AlltextItemHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_home_list_all_text_view,parent,false))
+           //ITEM_SEARCH->SearchItemHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_home_list_search_view,parent,false))
+            ITEM_ALL_TEXT->AlltextItemHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_all_text_view_type,parent,false))
             ITEM_CENTER_PIC_TEXT->PicCenterItemHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_home_list_pic_center_view,parent,false))
             ITEM_PIC_MORE_TEXT->PicMoreItemHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_home_list_pic_more_view,parent,false))
             ITEM_VOICE_TEXT->VoiceItemHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_home_list_voice_view,parent,false))
@@ -64,33 +62,69 @@ class NewsListAdapter(var mContext:Context,val list:ArrayList<NewsBean>):Recycle
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item:NewsBean = list[position]
         when(holder){
-            is SearchItemHolder->{
-                holder.btn_search.setOnClickListener {
-                    //
-                }
-            }
+//            is SearchItemHolder->{
+//                holder.btn_search.setOnClickListener {
+//                    //
+//                }
+//            }
             is  AlltextItemHolder->{
-                val txtType = holder.itemView as SquareAllTextView
-                txtType.setContent(item)
-                txtType.setOnViewListener(object :SquareAllTextView.OnViewListener{
-                    override fun onSpannedLabel(str: String) {
-                        onItemListener?.onSelectLabel(str)
+                //解决expandTextView 复用bug
+                val txt = item.textContent
+                holder.expandText.setChanged(item.isExpand)
+                holder.expandText.setExpandText(txt,item.isExpand,object :CompatExpandTextView.OnExpandListener{
+                    override fun onExpand() {
+                        holder.btn_expand.text = "收起"
+                        holder.btn_expand.visibility = View.VISIBLE
                     }
 
-                    override fun onLabel(str: String) {
-                        onItemListener?.onSelectLabel(str)
+                    override fun onCollapse() {
+                        holder.btn_expand.text = "展开"
+                        holder.btn_expand.visibility = View.VISIBLE
                     }
 
-                    override fun onExpandState(isExpand: Boolean) {
-                        item.isExpand = isExpand
-                        onItemListener?.onExpandState(isExpand,position)
+                    override fun onLoss() {
+                        holder.btn_expand.visibility = View.GONE
                     }
                 })
-                txtType.setExpandState(item.isExpand)
+                var isClicked = item.isExpand
+                holder.btn_expand.setOnClickListener {
+                    if (isClicked){
+                        holder.expandText.setChanged(false)
+                        onItemListener?.onExpandState(false,position)
+                    }else{
+                        holder.expandText.setChanged(true)
+                        onItemListener?.onExpandState(true,position)
+                    }
+
+                }
+//                val txtType = holder.itemView as SquareAllTextView
+//                txtType.setContent(item)
+//                txtType.setExpandState(item.isExpand)
+//                txtType.setOnViewListener(object :SquareAllTextView.OnViewListener{
+//                    override fun onSpannedLabel(str: String) {
+//                        onItemListener?.onSelectLabel(str)
+//                    }
+//
+//                    override fun onLabel(str: String) {
+//                        onItemListener?.onSelectLabel(str)
+//                    }
+//
+//                    override fun onExpandState(isExpand: Boolean) {
+//                        item.isExpand = isExpand
+//                        onItemListener?.onExpandState(isExpand,position)
+//                    }
+//                })
+//                txtType.setExpandState(item.isExpand)
             }
             is PicCenterItemHolder->{
                 val picType  = holder.itemView as SquarePicCenterView
                 picType.setContent(item)
+                picType.setCollState(item.isExpand)
+                picType.listener = object :SquarePicCenterView.OnItemViewListener{
+                    override fun onExpand(isCollapsed: Boolean) {
+                        onItemListener?.onExpandState(isCollapsed,position)
+                    }
+                }
             }
             is PicMoreItemHolder->{
                 val picType = holder.itemView as SquarePicMoreView
@@ -114,7 +148,10 @@ class NewsListAdapter(var mContext:Context,val list:ArrayList<NewsBean>):Recycle
     class SearchItemHolder(view:View):RecyclerView.ViewHolder(view){
         internal val btn_search: ConstraintLayout = view.findViewById(R.id.btn_search)
     }
-    class AlltextItemHolder(view:View):RecyclerView.ViewHolder(view)
+    class AlltextItemHolder(view:View):RecyclerView.ViewHolder(view){
+        internal val expandText:CompatExpandTextView = view.findViewById(R.id.tv_expand)
+        internal val btn_expand:Button = view.findViewById(R.id.btn_expand)
+    }
     class PicCenterItemHolder(view:View):RecyclerView.ViewHolder(view)
     class PicMoreItemHolder(view:View):RecyclerView.ViewHolder(view)
     class VoiceItemHolder(view:View):RecyclerView.ViewHolder(view)
@@ -123,7 +160,7 @@ class NewsListAdapter(var mContext:Context,val list:ArrayList<NewsBean>):Recycle
 
     interface OnItemListener{
         fun onSelectLabel(label:String)
-        fun onExpandState(isExpand:Boolean,position: Int)
+        fun onExpandState(isCollapsed:Boolean,position: Int)
         fun onItemLongClick(view: View)
     }
 

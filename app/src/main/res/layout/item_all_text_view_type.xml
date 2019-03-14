@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.basicframework.ui.custom.SquareAllTextView xmlns:android="http://schemas.android.com/apk/res/android"
-                                                        android:layout_width="match_parent"
-                                                        android:layout_height="wrap_content"
-                                                        xmlns:app="http://schemas.android.com/apk/res-auto">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="wrap_content"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
             android:id="@+id/ll_post"
             android:layout_width="match_parent"
@@ -21,8 +21,13 @@
                 android:id="@+id/tv_expand"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+        <Button
+                android:id="@+id/btn_expand"
+                android:text = "展开"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"/>
 
         <include layout="@layout/include_square_bottom_view"/>
 
     </LinearLayout>
-</com.example.basicframework.ui.custom.SquareAllTextView>
+</android.support.constraint.ConstraintLayout>

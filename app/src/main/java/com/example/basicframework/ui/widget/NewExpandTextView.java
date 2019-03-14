@@ -18,8 +18,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.TextView;
-import com.example.basicframework.R;
-import com.example.basicframework.utils.PixelUtils;
+
 
 public class NewExpandTextView extends AppCompatTextView {
 
@@ -38,33 +37,32 @@ public class NewExpandTextView extends AppCompatTextView {
     private boolean mCollapsed = true; // Show short version as default.标示现在所处的折叠状态
     private boolean mAnimating = false;
     private boolean needCollapse = true; //标示是否需要折叠已显示末尾的图标
+    private TextView btn_expand;
 
     /* Listener for callback */
     private OnExpandStateChangeListener mListener;
 
     public NewExpandTextView(Context context) {
         super(context);
+        initView();
     }
 
     public NewExpandTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        initView();
     }
 
     public NewExpandTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-//        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.NewExpandTextView, defStyleAttr, 0);
-//        mMaxCollapsedLines = typedArray.getInt(R.styleable.NewExpandTextView_maxCollapsedLines, MAX_COLLAPSED_LINES);
-//        mAnimationDuration = typedArray.getInt(R.styleable.NewExpandTextView_animDuration, DEFAULT_ANIM_DURATION);
-//        mAnimAlphaStart = typedArray.getFloat(R.styleable.NewExpandTextView_animAlphaStart, DEFAULT_ANIM_ALPHA_START);
-//        mExpandDrawable = typedArray.getDrawable(R.styleable.NewExpandTextView_expandDrawable);
-//        mCollapseDrawable = typedArray.getDrawable(R.styleable.NewExpandTextView_collapseDrawable);
-//        arrowAlign = typedArray.getInteger(R.styleable.NewExpandTextView_arrowAlign, ALIGN_RIGHT_BOTTOM);
-//        arrowPosition = typedArray.getInteger(R.styleable.NewExpandTextView_arrowPosition, POSITION_RIGHT);
-//        arrowDrawablePadding = (int) typedArray.getDimension(R.styleable.NewExpandTextView_arrowPadding, PixelUtils.INSTANCE.dp2px(context, 2f));
-//
-//        typedArray.recycle();
+        initView();
     }
 
+
+    private void initView(){
+//        btn_expand.setOnClickListener(v->{
+//            onClickStatus();
+//        });
+    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -80,10 +78,13 @@ public class NewExpandTextView extends AppCompatTextView {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (getLineCount() <= mMaxCollapsedLines) {
             needCollapse = false;
+            mListener.onNeedCollapseChanged(false);
+            //btn_expand.setVisibility(GONE);
             return;
         }
 
         needCollapse = true;
+        //btn_expand.setVisibility(VISIBLE);
 
         mTextHeightWithMaxLines = getRealTextViewHeight(this);
         if (mCollapsed) {
@@ -96,7 +97,7 @@ public class NewExpandTextView extends AppCompatTextView {
         if (mCollapsed) {
             mCollapsedHeight = getMeasuredHeight();
         }
-
+        mListener.onNeedCollapseChanged(true);
     }
 
 
@@ -106,6 +107,9 @@ public class NewExpandTextView extends AppCompatTextView {
         super.setText(text, type);
     }
 
+    public void setExpandBtn(TextView btn_expand){
+        this.btn_expand = btn_expand;
+    }
 
     public void onClickStatus(){
         if (!needCollapse) {
@@ -221,6 +225,10 @@ public class NewExpandTextView extends AppCompatTextView {
         mCollapsed = isCollapsed;
     }
 
+    public Boolean getNeedCollapse(){
+        return needCollapse;
+    }
+
 
     public interface OnExpandStateChangeListener {
         void onChangeStateStart(boolean willExpand);
@@ -231,6 +239,8 @@ public class NewExpandTextView extends AppCompatTextView {
          * @param isExpanded - true if the TextView has been expanded
          */
         void onExpandStateChanged(TextView textView, boolean isExpanded);
+
+        void onNeedCollapseChanged(boolean needCollapse);
     }
 
     public void setOnExpandStateChangeListener(OnExpandStateChangeListener listener) {

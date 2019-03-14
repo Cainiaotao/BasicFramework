@@ -17,45 +17,27 @@ class SquareAllTextView : ConstraintLayout {
     private var listener:OnViewListener?=null
 
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs){
-        LayoutInflater.from(context).inflate(R.layout.custom_item_home_all_text_view,this)
+        //LayoutInflater.from(context).inflate(R.layout.custom_item_home_all_text_view,this)
         init()
     }
 
     private fun init(){
 
-        expand.setOnExpandViewListener(object :TopicExpandTextView.OnExpandViewListener{
-            override fun onSelectLabel(label: String) {
-                listener?.onSpannedLabel(label)
-            }
-
-            override fun onClickTag(str: String) {
-                listener?.onLabel(str)
-            }
-
-            override fun onExpandState(isExpand: Boolean) {
-                listener?.onExpandState(isExpand)
-            }
-
-        })
-
     }
-
-
 
 
     fun setContent(info: NewsBean){
-        tv_name.text = info.user!!.name
-        expand.setContent(info.textContent)
-        expand.setflowLayout(info.labels)
-        if (info.labels.size>0){
-            info.labels.forEach {
-                expand.setSpanContext(" #$it")
-            }
-        }
+       // tv_name.text = info.user!!.name
+//        expand.setContext(info.textContent)
+//        expand.setOnExpandStateListener(object:ExpandTextView.OnExpandStateListener{
+//            override fun onExpandStateChanged(isCollapsed: Boolean) {
+//                listener?.onExpandState(isCollapsed)
+//            }
+//        })
     }
 
     fun setExpandState(isExpand:Boolean){
-        expand.setExpand(isExpand)
+        //expand.expandState(isExpand)
     }
 
     fun setOnViewListener(listener:OnViewListener){

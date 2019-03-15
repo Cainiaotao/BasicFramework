@@ -1,5 +1,6 @@
 package com.example.basicframework.ui.fragment.home
 
+import android.content.Intent
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.PopupMenu
@@ -17,8 +18,7 @@ import com.github.jdsjlzx.recyclerview.LuRecyclerView
 import com.github.jdsjlzx.recyclerview.LuRecyclerViewAdapter
 import kotlinx.android.synthetic.main.fragment_news_list.*
 import android.view.ViewGroup
-
-
+import com.example.basicframework.ui.activity.DrawerCameraActivity
 
 
 class NewsListFragment:LazyLoadFragment(), SwipeRefreshLayout.OnRefreshListener ,NewsListAdapter.OnItemListener{
@@ -145,6 +145,10 @@ class NewsListFragment:LazyLoadFragment(), SwipeRefreshLayout.OnRefreshListener 
         showToast(activity!!,"长按")
         popMenu(view)
 
+    }
+
+    override fun onVideoThumb() {
+        startActivity(Intent(activity!!,DrawerCameraActivity::class.java))
     }
 
     //show popupMenu

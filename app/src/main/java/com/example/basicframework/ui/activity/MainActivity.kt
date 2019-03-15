@@ -1,10 +1,12 @@
 package com.example.basicframework.ui.activity
 
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.DrawerLayout
 import android.view.Gravity
+import cn.jzvd.Jzvd
 import com.example.basicframework.R
 import com.example.basicframework.base.BaseActivity
 import com.example.basicframework.base.bus.OpenDrawerBus
@@ -31,6 +33,7 @@ class MainActivity :BaseActivity() {
         //setStatusBarColor()
         selectedTab(HomeFragment::class.java.name)
         registerEventBus(this)
+        //requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
     override fun initData() {
@@ -168,6 +171,20 @@ class MainActivity :BaseActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        if (Jzvd.backPress())return
+        super.onBackPressed()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Jzvd.releaseAllVideos()
+    }
+
+    //解决竖屏
+    override fun setRequestedOrientation(requestedOrientation: Int) {
+        return
+    }
     override fun onDestroy() {
         super.onDestroy()
         unRegisterEventBus(this)

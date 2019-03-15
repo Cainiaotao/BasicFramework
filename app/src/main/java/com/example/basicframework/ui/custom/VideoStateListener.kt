@@ -21,4 +21,8 @@ interface VideoStateListener {
      fun onTouch()
 
      fun onStartDismissControlViewTimer()
+
+     fun onError()
+
+     fun onThumb()
 }

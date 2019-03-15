@@ -141,6 +141,11 @@ class NewsListAdapter(var mContext:Context,val list:ArrayList<NewsBean>):Recycle
             is VideoItemHolder->{
                 val videType = holder.itemView as SquareVideoView
                 videType.setContent(item)
+                videType.listener = object:SquareVideoView.OnClickListener{
+                    override fun onThumb() {
+                        onItemListener?.onVideoThumb()
+                    }
+                }
             }
         }
     }
@@ -162,6 +167,7 @@ class NewsListAdapter(var mContext:Context,val list:ArrayList<NewsBean>):Recycle
         fun onSelectLabel(label:String)
         fun onExpandState(isCollapsed:Boolean,position: Int)
         fun onItemLongClick(view: View)
+        fun onVideoThumb()
     }
 
     fun setOnItemListener(onItemListener:OnItemListener){

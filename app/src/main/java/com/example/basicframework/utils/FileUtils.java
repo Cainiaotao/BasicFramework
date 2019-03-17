@@ -1,6 +1,7 @@
 package com.example.basicframework.utils;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +15,9 @@ import com.example.basicframework.app.APP;
 
 import java.io.*;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class FileUtils {
 
@@ -328,5 +331,43 @@ public class FileUtils {
         String header = builder.toString();
         //KLog.i("file header:" + header);
         return header;
+    }
+
+    public static List<String> getLatestPhotoPaths(Context context, int maxCount) {
+        Uri mImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+
+        String key_MIME_TYPE = MediaStore.Images.Media.MIME_TYPE;
+        String key_DATA = MediaStore.Images.Media.DATA;
+
+        ContentResolver mContentResolver = context.getContentResolver();
+
+        // 只查询jpg和png的图片,按最新修改排序
+        Cursor cursor = mContentResolver.query(mImageUri, new String[]{key_DATA},
+                key_MIME_TYPE + "=? or " + key_MIME_TYPE + "=? or " + key_MIME_TYPE + "=?",
+                new String[]{"image/jpg", "image/jpeg", "image/png"},
+                MediaStore.Images.Media.DATE_MODIFIED);
+
+        List<String> latestImagePaths = null;
+        if (cursor != null) {
+            //从最新的图片开始读取.
+            //当cursor中没有数据时，cursor.moveToLast()将返回false
+            if (cursor.moveToLast()) {
+                latestImagePaths = new ArrayList<String>();
+
+                while (true) {
+                    // 获取图片的路径
+                    String path = "file:/" + cursor.getString(0);
+                    if (!latestImagePaths.contains(path))
+                        latestImagePaths.add(path);
+
+                    if (latestImagePaths.size() >= maxCount || !cursor.moveToPrevious()) {
+                        break;
+                    }
+                }
+            }
+            cursor.close();
+        }
+
+        return latestImagePaths;
     }
 }

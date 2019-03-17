@@ -13,6 +13,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -61,4 +62,7 @@ dependencies {
     implementation project(':library')
     //https://github.com/laobie/NineGridImageView
     implementation 'com.jaeger.ninegridimageview:library:1.1.1'
+    //<仿微信朋友圈查看图片 > 只能查看小图
+    //implementation 'com.github.iielse:ImageWatcher:1.1.5'
+    implementation project(':Transferee')
 }

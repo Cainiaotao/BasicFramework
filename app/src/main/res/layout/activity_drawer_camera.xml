@@ -35,4 +35,9 @@
             <!--app:headerLayout="@layout/navigation_camera_header_main"-->
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="match_parent"/>-->
+    <!--<com.github.ielse.imagewatcher.ImageWatcher-->
+            <!--android:id="@+id/ie_image"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"/>-->
+
 </android.support.v4.widget.DrawerLayout>

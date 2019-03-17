@@ -10,9 +10,7 @@ import android.provider.MediaStore
 import android.annotation.SuppressLint
 import android.content.Context
 import android.database.Cursor
-import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Handler
 import android.support.v7.widget.GridLayoutManager
 import android.widget.ImageView
 import ch.ielse.view.imagewatcher.ImageWatcher
@@ -20,9 +18,12 @@ import com.bumptech.glide.Glide
 import com.example.basicframework.base.PictureMedia
 import com.example.basicframework.base.VideoMedia
 import com.example.basicframework.ui.adapter.recycler.PictureListAdapter
+import com.example.basicframework.utils.FileUtils
 import com.example.basicframework.utils.GlideSimpleTarget
-import com.example.basicframework.utils.GlideUtils
-import com.example.basicframework.utils.UIUtils
+import com.hitomi.tilibrary.style.index.NumberIndexIndicator
+import com.hitomi.tilibrary.style.progress.ProgressBarIndicator
+import com.hitomi.tilibrary.transfer.TransferConfig
+import com.hitomi.tilibrary.transfer.Transferee
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.Observer
@@ -36,17 +37,54 @@ class DrawerCameraActivity:BaseActivity(), ImageWatcher.OnPictureLongPressListen
 
 
 
+    private var imageTransferee: Transferee?=null
+    private var imageConfig:TransferConfig?=null
     private var pictureList = ArrayList<PictureMedia>()
     private var pictureAdapter: PictureListAdapter?=null
+    //private var iwHelper:ImageWatcherHelper?=null
+    private var isTranslucentStatus:Boolean= false
 
     override fun setContentView(): Int = R.layout.activity_drawer_camera
 
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
-        imageWatcher.setTranslucentStatus(UIUtils.calcStatusBarHeight(this))
-        imageWatcher.setErrorImageRes(R.mipmap.error_picture)
-        imageWatcher.setLoader(this)
+        //initChieImage()
+        //initImageWatcher()
+        initTransferee()
+    }
 
+    private fun initChieImage(){
+//        imageWatcher.setTranslucentStatus(if (!isTranslucentStatus) UIUtils.calcStatusBarHeight(this) else 0)
+//        imageWatcher.setErrorImageRes(R.mipmap.error_picture)
+//        imageWatcher.setLoader(this)
+    }
+
+
+
+    private fun initTransferee(){
+        imageTransferee= Transferee.getDefault(this)
+    }
+
+    private fun initTransfereeConfig() {
+        val images = ArrayList<String>()
+        pictureList.forEach {
+            val path = "file:/${it.path}"
+            images.add(path)
+        }
+        //val tmp =FileUtils.getLatestPhotoPaths(this,100)
+        imageConfig = TransferConfig.build()
+            .setSourceImageList(images)
+            .setThumbnailImageList(images)
+            .setMissPlaceHolder(R.mipmap.img_def_avatar)
+            .setErrorPlaceHolder(R.mipmap.img_def_avatar)
+            .setProgressIndicator(ProgressBarIndicator())
+            .setIndexIndicator(NumberIndexIndicator())
+            .setJustLoadHitImage(true)
+            .bindRecyclerView(recyclerView, R.id.img_picture)
+    }
+    private fun imageTransfereeShow(position: Int){
+        imageConfig!!.nowThumbnailIndex = position
+        imageTransferee!!.apply(imageConfig).show()
     }
 
     override fun initData() {
@@ -54,7 +92,16 @@ class DrawerCameraActivity:BaseActivity(), ImageWatcher.OnPictureLongPressListen
         pictureAdapter = PictureListAdapter(this,pictureList)
         pictureAdapter?.listener = object :PictureListAdapter.OnItemClickListener{
             override fun onItemClick(view:ImageView,position: Int, imageUrl: String) {
-                imageWatcher.show(view, arrayListOf(view), arrayListOf(imageUrl))
+               // imageWatcher.show(view, arrayListOf(view), arrayListOf(imageUrl))
+//                val mposition:Int = 0
+//                val mapping = SparseArray<ImageView>()
+//                mapping.put(mposition,view)
+//                val image = pictureList[position].path
+//                val urls = convert(arrayListOf(image).toList())
+//                //iwHelper!!.show(view,mapping, urls)
+//                ie_image.show(view,mapping, urls)
+                imageTransfereeShow(position)
+
             }
         }
         recyclerView.layoutManager = GridLayoutManager (this,4,GridLayoutManager.VERTICAL,false)
@@ -62,10 +109,16 @@ class DrawerCameraActivity:BaseActivity(), ImageWatcher.OnPictureLongPressListen
         loadData()
     }
 
+    private fun convert(data: List<String>):List<Uri>{
+        val list = ArrayList<Uri>()
+        data.forEach { list.add(Uri.parse(it)) }
+        return list
+    }
+
     override fun initEvent() {
         super.initEvent()
         tv_menu.setOnClickListener {drawerLay.openDrawer(Gravity.LEFT) }
-        imageWatcher.setOnPictureLongPressListener(this)
+       // imageWatcher.setOnPictureLongPressListener(this)
     }
 
     //获取本地图片
@@ -113,6 +166,7 @@ class DrawerCameraActivity:BaseActivity(), ImageWatcher.OnPictureLongPressListen
                 pictureList.clear()
                 pictureList.addAll(t)
                 pictureAdapter?.notifyDataSetChanged()
+                initTransfereeConfig()
             }
 
             override fun onError(e: Throwable) {
@@ -162,9 +216,15 @@ class DrawerCameraActivity:BaseActivity(), ImageWatcher.OnPictureLongPressListen
     }
 
     override fun onBackPressed() {
-        if (!imageWatcher.handleBackPressed()){
-            super.onBackPressed()
-        }
+//        if (!imageWatcher.handleBackPressed()){
+//            super.onBackPressed()
+//        }
+//        if (!iwHelper!!.handleBackPressed()){
+//            super.onBackPressed()
+//        }
+//        if (!ie_image.handleBackPressed()) {
+//            super.onBackPressed()
+//        }
     }
 
     override fun onDestroy() {

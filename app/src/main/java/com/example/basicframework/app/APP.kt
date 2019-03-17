@@ -2,7 +2,7 @@ package com.example.basicframework.app
 
 import android.app.Application
 import android.content.Context
-
+//
 class APP : Application() {
 
     companion object {

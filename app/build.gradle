@@ -65,4 +65,6 @@ dependencies {
     //<仿微信朋友圈查看图片 > 只能查看小图
     //implementation 'com.github.iielse:ImageWatcher:1.1.5'
     implementation project(':Transferee')
+    //动画库
+    implementation 'com.nineoldandroids:library:2.4.0'
 }

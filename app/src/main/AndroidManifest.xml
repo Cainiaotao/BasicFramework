@@ -28,6 +28,8 @@
         <activity android:name=".ui.activity.CalendarActivity"/>
         <activity android:name=".ui.activity.DrawerCameraActivity"/>
         <activity android:name=".ui.activity.MeSettingActivity"/>
+        <activity android:name=".ui.activity.WxImageActivity"/>
+        <activity android:name=".ui.activity.PhotoBrowseActivity"/>
     </application>
 
 </manifest>

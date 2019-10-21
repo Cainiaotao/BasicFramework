@@ -63,12 +63,12 @@ dependencies {
     // <仿微信朋友圈查看图片>
     implementation 'ch.ielse:imagewatcher:1.0.3'
     //https://github.com/hanzhanbing/AVLoadingIndicatorView
-    implementation project(':library')
+    //implementation project(':library')
     //https://github.com/laobie/NineGridImageView
     implementation 'com.jaeger.ninegridimageview:library:1.1.1'
     //<仿微信朋友圈查看图片 > 只能查看小图
     //implementation 'com.github.iielse:ImageWatcher:1.1.5'
-    implementation project(':Transferee')
+    //implementation project(':Transferee')
     //动画库
     implementation 'com.nineoldandroids:library:2.4.0'
 }
